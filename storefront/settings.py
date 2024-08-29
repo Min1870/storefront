@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
+from datetime import timedelta
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -39,12 +40,13 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_filters',
     'rest_framework',
+    'djoser',
     'playground',
     'debug_toolbar',
     'store',
-    'store_custom',
     'tags',
     'likes',
+    'core',
 ]
 
 MIDDLEWARE = [
@@ -144,4 +146,31 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 REST_FRAMEWORK = {
     'COERCE_DECIMAL_TO_STRING': False,
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+    # 'DEFAULT_PERMISSION_CLASSES': [
+    #     'rest_framework.permissions.IsAuthenticated'
+    # ]
 }
+
+
+AUTH_USER_MODEL = 'core.User'
+
+DJOSER = {
+    'SERIALIZERS': {
+        'user_create': 'core.serializers.UserCreateSerializer',
+        'current_user': 'core.serializers.UserSerializer',
+
+    }
+}
+
+SIMPLE_JWT = {
+    'AUTH_HEADER_TYPES': ('JWT',),
+    "ACCESS_TOKEN_LIFETIME": timedelta(days=1),
+}
+
+
+# eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzI1MDA4MTc3LCJpYXQiOjE3MjQ5MjE3NTAsImp0aSI6IjY3Yjc0YjZhMTRjNTQzZGJiM2IxNThkOTFlNDMzZTMxIiwidXNlcl9pZCI6NH0.XjXx8J7MB2t37c63teV-Sne1pqI4AshheKAIFHz_SaM
+
+# eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzI1MDI4MzE5LCJpYXQiOjE3MjQ5NDE5MTksImp0aSI6IjVkY2I0OWJjMGJlNjQxODk5ODNhNDE2OWZhMTI0M2U4IiwidXNlcl9pZCI6MX0.hUE7NaJSQqA9NGE_qo9ECxliv22U41vqr9xDI5RwdiY
